@@ -6,6 +6,12 @@
 
 <div align="center"><a title="" href="https://github.com/zjykzj/vocdev"><img align="center" src="./imgs/vocdev.png" alt=""></a></div>
 
+> **⚠️ Repository Status: This repository is no longer actively maintained.**
+>
+> **🚀 Active development has moved to [DataFlow-CV](https://github.com/zjykzj/DataFlow-CV).**
+>
+> Please consider using the new repository for updated tools and support.
+
 <p align="center">
   «vocdev» saved some documents, code, and tools for Pascal VOC
 <br>

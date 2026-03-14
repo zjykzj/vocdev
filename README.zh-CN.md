@@ -6,6 +6,12 @@
 
 <div align="center"><a title="" href="https://github.com/zjykzj/vocdev"><img align="center" src="./imgs/vocdev.png" alt=""></a></div>
 
+> **⚠️ 仓库状态：此仓库不再积极维护。**
+>
+> **🚀 活跃开发已移至 [DataFlow-CV](https://github.com/zjykzj/DataFlow-CV)。**
+>
+> 请考虑使用新仓库以获取更新的工具和支持。
+
 <p align="center">
   «vocdev»保存了一些关于Pascal VOC的文档、代码和工具
 <br>

@@ -1,180 +1,212 @@
 # CLAUDE.md
 
-本文件为 Claude Code（claude.ai/code）在此代码仓库中工作提供指导。
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 仓库概述
+## Repository Overview
 
-vocdev 是一个用于 Pascal VOC 数据集的工具集，提供多种格式转换和可视化功能。Pascal VOC 是一个常用的轻量级目标识别和检测数据集，本仓库保存了常用的实现和文档。
+`vocdev` is a toolset for Pascal VOC dataset, providing format conversion and visualization utilities. Pascal VOC is a commonly used lightweight object detection dataset. This repository contains commonly used implementations and documentation.
 
-## 主要功能
+> **Note:** This repository is no longer actively maintained. Active development has moved to [DataFlow-CV](https://github.com/zjykzj/DataFlow-CV).
 
-1. **格式转换**：
-   - VOC → COCO：`py/voc2coco.py`
-   - VOC → YOLOv5：`py/voc2yolov5.py`
-   - VOCLike → YOLOv5：`py/voclike2yolov5.py`
-   - YOLOv5 → VOCLike：`py/yolo2voclike.py`
+## Main Functionality
 
-2. **工具脚本**：
-   - `py/find_classes.py`：遍历标注文件，提取类别列表
-   - `py/show_voclike_label.py`：可视化 VOCLike 格式的标注
-   - `py/show_yololike_label.py`：可视化 YOLOLike 格式的标注
+1. **Format Conversion**:
+   - VOC → COCO: `py/voc2coco.py`
+   - VOC → YOLOv5: `py/voc2yolov5.py`
+   - VOCLike → YOLOv5: `py/voclike2yolov5.py`
+   - YOLOv5 → VOCLike: `py/yolo2voclike.py`
 
-3. **辅助文件**：
-   - `voc.names`：Pascal VOC 的 20 个默认类别列表
+2. **Utility Scripts**:
+   - `py/find_classes.py`: Traverse annotation files and extract class list
+   - `py/show_voclike_label.py`: Visualize VOCLike format annotations
+   - `py/show_yololike_label.py`: Visualize YOLOLike format annotations
 
-## 项目结构
+3. **Supporting Files**:
+   - `voc.names`: Default 20-class list for Pascal VOC (see below for contents)
+
+## Project Structure
 
 ```
 .
-├── py/                    # 所有 Python 脚本
-│   ├── voc2coco.py       # VOC 转 COCO
-│   ├── voc2yolov5.py     # VOC 转 YOLOv5
-│   ├── voclike2yolov5.py # VOCLike 转 YOLOv5
-│   ├── yolo2voclike.py   # YOLOv5 转 VOCLike
-│   ├── find_classes.py   # 提取类别列表
-│   ├── show_voclike_label.py # 可视化 VOCLike 标注
-│   ├── show_yololike_label.py # 可视化 YOLOLike 标注
-│   ├── dataset.py        # 数据集相关（简单示例）
+├── py/                    # All Python scripts
+│   ├── voc2coco.py       # VOC to COCO
+│   ├── voc2yolov5.py     # VOC to YOLOv5
+│   ├── voclike2yolov5.py # VOCLike to YOLOv5
+│   ├── yolo2voclike.py   # YOLOv5 to VOCLike
+│   ├── find_classes.py   # Extract class list
+│   ├── show_voclike_label.py # Visualize VOCLike annotations
+│   ├── show_yololike_label.py # Visualize YOLOLike annotations
+│   ├── dataset.py        # Dataset example (minimal)
 │   └── __init__.py
-├── assets/               # 资源文件
-├── imgs/                # 图片资源
-├── voc.names            # 类别名称文件
-├── README.md            # 英文说明
-├── README.zh-CN.md      # 中文说明
-└── LICENSE              # Apache 2.0 许可证
+├── assets/               # Sample data for testing
+├── imgs/                # Image resources
+├── voc.names            # Class names file (see below)
+├── README.md            # English documentation
+├── README.zh-CN.md      # Chinese documentation
+└── LICENSE              # Apache 2.0 license
 ```
 
-## 使用方法
+**voc.names contents** (20 Pascal VOC classes):
+```
+aeroplane
+bicycle
+bird
+boat
+bottle
+bus
+car
+cat
+chair
+cow
+diningtable
+dog
+horse
+motorbike
+person
+pottedplant
+sheep
+sofa
+train
+tvmonitor
+```
 
-### 环境依赖
-所有脚本基于 Python 3，依赖以下库：
-- `torchvision`（用于加载 VOC 数据集，依赖 PyTorch）
+## Usage
+
+### Environment Dependencies
+All scripts require Python 3 and the following libraries:
+- `torchvision` (depends on PyTorch, used for loading VOC datasets)
 - `numpy`
-- `PIL`（Pillow）
+- `PIL` (Pillow)
 - `tqdm`
-- `opencv-python`（用于可视化脚本）
-- `argparse`（Python 标准库）
+- `opencv-python` (for visualization scripts only)
+- `argparse` (standard library)
 
-可通过以下命令安装依赖：
+Install with:
 ```bash
 pip install torchvision numpy Pillow tqdm opencv-python
 ```
 
-### 常用命令
+### Common Commands
 
-#### 1. VOC 转 COCO
+#### 1. VOC to COCO
 ```bash
 python py/voc2coco.py -v ../datasets/voc -c ../datasets/voc2coco -l train-2007 val-2007 test-2007 train-2012 val-2012
 ```
-- `-v`：VOC 数据集根路径
-- `-c`：COCO 格式输出路径
-- `-l`：要处理的数据集列表（支持 train-2007, val-2007, test-2007, trainval-2007, train-2012, val-2012, trainval-2007）
+- `-v`: VOC dataset root path
+- `-c`: COCO format output path
+- `-l`: List of datasets to process (supports train-2007, val-2007, test-2007, trainval-2007, train-2012, val-2012, trainval-2007)
 
-#### 2. VOC 转 YOLOv5
+#### 2. VOC to YOLOv5
 ```bash
 python py/voc2yolov5.py -s ../datasets/voc -d ../datasets/voc2yolov5-train -l trainval-2007 trainval-2012
 python py/voc2yolov5.py -s ../datasets/voc -d ../datasets/voc2yolov5-val -l test-2007
 ```
-- `-s`：源数据集路径
-- `-d`：目标输出路径
-- `-l`：数据集列表
+- `-s`: Source dataset path
+- `-d`: Destination output path
+- `-l`: Dataset list
 
-#### 3. VOCLike 转 YOLOv5
+#### 3. VOCLike to YOLOv5
 ```bash
 python py/voclike2yolov5.py ../datasets/voclike/JPEGImages ../datasets/voclike/Annotations voc.names ../datasets/voclike2yolov5
 ```
-- 第一个参数：图像目录路径（JPEGImages）
-- 第二个参数：标注目录路径（Annotations）
-- 第三个参数：类别文件路径（如 voc.names）
-- 第四个参数：YOLOv5 格式输出路径
+- First argument: Image directory path (JPEGImages)
+- Second argument: Annotation directory path (Annotations)
+- Third argument: Class file path (e.g., voc.names)
+- Fourth argument: YOLOv5 format output path
 
-#### 4. YOLOv5 转 VOCLike
+#### 4. YOLOv5 to VOCLike
 ```bash
 python py/yolo2voclike.py ../datasets/yolov5 voc.names ../datasets/yolov52voclike
 ```
-- 第一个参数：YOLOv5 数据根路径（包含 images/ 和 labels/ 目录）
-- 第二个参数：类别文件路径（如 voc.names）
-- 第三个参数：VOCLike 格式输出路径
+- First argument: YOLOv5 data root path (contains images/ and labels/ directories)
+- Second argument: Class file path (e.g., voc.names)
+- Third argument: VOCLike format output path
 
-#### 5. 提取类别列表
+#### 5. Extract Class List
 ```bash
 python py/find_classes.py ../../myai/mask/datasets/MaskDatasets/datasets/
 ```
-- 第一个参数：VOCLike 数据根路径（包含 XML 标注文件）
-- `--dst`：输出目录（默认为 ./output）
+- First argument: VOCLike data root path (contains XML annotation files)
+- `--dst`: Output directory (default ./output)
 
-#### 6. 可视化标注
+#### 6. Visualize Annotations
 ```bash
-# 可视化 VOCLike 标注（单个文件）
+# Visualize single VOCLike annotation
 python py/show_voclike_label.py assets/voclike/000006.jpg assets/voclike/000006.xml
-# 可视化整个目录
+# Visualize entire directory
 python py/show_voclike_label.py assets/voclike/ assets/voclike/
-# 保存标注图像到输出目录
+# Save annotated images to output directory
 python py/show_voclike_label.py assets/voclike/ assets/voclike/ --dst ./output/
 
-# 可视化 YOLOLike 标注（单个文件）
+# Visualize single YOLOLike annotation
 python py/show_yololike_label.py assets/yololike/000000082986.jpg assets/yololike/000000082986.txt
-# 可视化整个目录
+# Visualize entire directory
 python py/show_yololike_label.py assets/yololike/ assets/yololike/
-# 保存标注图像到输出目录
+# Save annotated images to output directory
 python py/show_yololike_label.py assets/yololike/ assets/yololike/ --dst ./output/
 ```
 
-### 注意事项
-- 转换脚本默认使用 `voc.names` 作为类别文件，可通过 `--classes` 参数指定自定义文件
-- VOC 数据集转换时，如果本地不存在数据集，`torchvision` 会自动下载（需要网络连接）
-- 输出目录会自动创建，如果已存在会进行覆盖检查（使用 `assert` 防止意外覆盖）
+### Notes
+- Conversion scripts default to using `voc.names` as the class file; use `--classes` parameter to specify a custom file
+- When converting VOC datasets, if the dataset doesn't exist locally, `torchvision` will automatically download it (requires internet)
+- Output directories are created automatically; existing directories trigger an `assert` check to prevent accidental overwrites
 
-## 开发规范
+## Development Guidelines
 
-### 代码风格
-- Python 文件使用 UTF-8 编码，带有 `# -*- coding: utf-8 -*-` 头
-- 文档字符串包含作者、日期和描述
-- 使用类型注解（`typing` 模块）
-- 导入顺序：标准库 → 第三方库 → 本地模块
+### Code Style
+- Python files use UTF-8 encoding with `# -*- coding: utf-8 -*-` header
+- Docstrings include author, date, and description
+- Use type annotations (`typing` module)
+- Import order: standard library → third‑party libraries → local modules
 
-### Git 提交
-- 遵循 [Conventional Commits](https://www.conventionalcommits.org/) 规范
-- 示例：`feat(py/voc2coco.py): add support for VOC2012`
-- 使用语义化版本控制（Semantic Versioning 2.0.0）
+### Git Commits
+- Follow [Conventional Commits](https://www.conventionalcommits.org/) specification
+- Example: `feat(py/voc2coco.py): add support for VOC2012`
+- Use semantic versioning (Semantic Versioning 2.0.0)
 
-### 扩展开发
-- 添加新脚本时，请参考现有脚本的结构
-- 提供完整的命令行参数和帮助信息
-- 在 README 中更新功能说明
+### Adding New Scripts
+- Follow the existing pattern: `parse_args()` → `main()` → `process()` functions
+- Provide complete command‑line argument parsing with `argparse` and help messages
+- Include a usage example in the script’s docstring
+- Update this CLAUDE.md and the README files with the new functionality
 
-## 架构说明
+### Testing and Quality Assurance
+- This repository currently has no automated tests, linting, or build system
+- When modifying or adding scripts, manually verify the conversion on a small sample dataset
+- Ensure backward compatibility is maintained (if required) by checking existing command‑line arguments
 
-### 数据格式
-1. **Pascal VOC**：标准 VOC 格式，使用 `torchvision.datasets.VOCDetection` 加载
-2. **COCO**：遵循 COCO 的 JSON 格式，输出 `instances_{dataset}{year}.json`
-3. **YOLOv5**：每个图像对应一个 `.txt` 文件，每行格式：`cls_id x_center y_center width height`（归一化坐标）
-4. **VOCLike**：类似 VOC 但不完全相同，包含 `JPEGImages/` 和 `Annotations/` 目录
+## Architecture
 
-### 转换逻辑
-- 所有转换脚本都使用类似的结构：`parse_args()` → `main()` → `process()`
-- 忽略 `difficult=1` 的标注对象
-- 坐标转换时进行归一化处理（YOLO 格式）
-- 支持批量处理多个数据集（通过 `-l` 参数指定列表）
+### Data Formats
+1. **Pascal VOC**: Standard VOC format, loaded via `torchvision.datasets.VOCDetection`
+2. **COCO**: Follows COCO JSON format; outputs `instances_{dataset}{year}.json`
+3. **YOLOv5**: Each image has a corresponding `.txt` file with lines: `cls_id x_center y_center width height` (normalized coordinates)
+4. **VOCLike**: Similar to VOC but not identical; contains `JPEGImages/` and `Annotations/` directories
 
-### 模块关系
-- `dataset.py` 仅作为示例，实际使用 `torchvision` 的 `VOCDetection`
-- `find_classes.py` 可独立使用，不依赖其他模块
-- 可视化脚本依赖 OpenCV（`cv2`），如果未安装会自动跳过图像显示
+### Conversion Logic
+- All conversion scripts share a similar structure: `parse_args()` → `main()` → `process()`
+- Objects with `difficult=1` are ignored
+- Coordinate conversion includes normalization (for YOLO format)
+- Supports batch processing of multiple datasets (via `-l` parameter)
 
-## 故障排除
+### Module Relationships
+- `dataset.py` is only an example; actual VOC loading uses `torchvision`’s `VOCDetection`
+- `find_classes.py` is standalone and does not depend on other modules
+- Visualization scripts depend on OpenCV (`cv2`); if not installed, image display is skipped
 
-### 常见问题
-1. **依赖缺失**：确保安装了 `torchvision`，它可能依赖 PyTorch
-2. **数据集路径错误**：使用绝对路径或正确的相对路径
-3. **类别不匹配**：确保自定义类别文件与标注中的类别名称一致
-4. **内存不足**：处理大型数据集时可能需要分批处理
+## Troubleshooting
 
-### 调试建议
-- 使用小规模数据集测试
-- 检查中间输出目录结构
-- 查看脚本打印的详细参数信息
+### Common Issues
+1. **Missing dependencies**: Ensure `torchvision` (and PyTorch) are installed
+2. **Incorrect dataset paths**: Use absolute paths or correct relative paths
+3. **Class mismatch**: Ensure custom class files match the annotation class names exactly
+4. **Out of memory**: Process large datasets in batches
+
+### Debugging Suggestions
+- Test with a small subset of data first
+- Check intermediate output directory structure
+- Examine the detailed parameter information printed by the scripts
 
 ---
 
-*本文件最后更新于 2026-03-06，基于仓库当前状态编写。*
+*This file was generated based on repository state as of 2026‑03‑14. Previous Chinese version is available in git history.*
